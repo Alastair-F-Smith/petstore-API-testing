@@ -1,6 +1,8 @@
 package pojos;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +26,17 @@ public class Pet{
 
 	@JsonProperty("status")
 	private String status;
+
+	public static Pet fromDataTableRow(Map<String, String> row) {
+		Pet pet = new Pet();
+		pet.setPhotoUrls(new ArrayList<>());
+		pet.setTags(new ArrayList<>());
+		pet.setCategory(new Category());
+		pet.setName(row.getOrDefault("name", ""));
+		pet.setId(Long.parseLong(row.getOrDefault("id", "-1")));
+		pet.setStatus(row.getOrDefault("status", "available"));
+		return pet;
+	}
 
 	public void setPhotoUrls(List<String> photoUrls){
 		this.photoUrls = photoUrls;
