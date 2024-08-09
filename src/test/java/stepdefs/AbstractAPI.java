@@ -12,7 +12,7 @@ public abstract class AbstractAPI {
 	}
 
 	public void setResponse(Response response) {
-		this.response = response;
+		AbstractAPI.response = response;
 	}
 
 	public RequestSpecification getRequestSpecification() {
@@ -20,6 +20,6 @@ public abstract class AbstractAPI {
 	}
 
 	public void setRequestSpecification(RequestSpecification requestSpecification) {
-		this.requestSpecification = requestSpecification;
+		AbstractAPI.requestSpecification = requestSpecification;
 	}
 }

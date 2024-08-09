@@ -1,7 +1,6 @@
 package stepdefs;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
+import io.cucumber.java.en.*;
 import io.restassured.RestAssured;
 import org.hamcrest.MatcherAssert;
 import pojos.Pet;
@@ -27,7 +26,6 @@ public class FindByStatusStepdefs extends AbstractAPI {
     public void iHavePreparedAURLWithoutAStatusParameter() {
         setRequestSpecification(RestAssured.given(PetUtils.findByStatusNoQueryParamRequestSpec()));
     }
-
 
     @And("I retrieve the pet data from the response body")
     public void iRetrieveThePetDataFromTheResponseBody() {
