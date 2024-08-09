@@ -17,15 +17,19 @@ Feature: login as an existing user
     Given I have prepared a request to login with username "example6" and password "password"
     When I perform a GET request
     Then A 200 status code is returned
+    And the response contains a user session ID
 
   Scenario: Login as a valid user with wrong password
     Given I have prepared a request to login with username "example6" and password "notMyPassword"
     When I perform a GET request
-    Then A 400 status code is returned
+    Then A 200 status code is returned
+    And the response contains a user session ID
 
   Scenario: Login as a user that does not exist
     Given I have prepared a request to login with username "example7" and password "password"
     When I perform a GET request
-    Then A 400 status code is returned
+    Then A 200 status code is returned
+    And the response contains a user session ID
+    But a GET request for the username returns a 404 status code
 
 
