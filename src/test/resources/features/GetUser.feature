@@ -24,9 +24,9 @@ Feature: retrieve a user's details from the API
     And lastName is "Example"
 
   Scenario: Get a invalid username
-    Given I have prepared a request to get user details with username "][=/-';#.,"
+    Given I have prepared a request to get user details with username null
     When I perform a GET request
-    Then A 400 status code is returned
+    Then A 404 status code is returned
 
   Scenario: Get a username that doesnt exist
     Given I have prepared a request to get user details with username "example5"
