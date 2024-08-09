@@ -55,7 +55,6 @@
                   <includes>
                       <include>**/CucumberRunner*.java</include>
                   </includes>
-                  <testFailureIgnore>true</testFailureIgnore>
               </configuration>
           </plugin>
       </plugins>
