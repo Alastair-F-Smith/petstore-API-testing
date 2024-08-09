@@ -1,4 +1,4 @@
-package dev.erratika;
+package dev.afs;
 
 public class Main {
 	public static void main(String[] args) {
