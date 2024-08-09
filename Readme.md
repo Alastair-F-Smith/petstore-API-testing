@@ -3,6 +3,8 @@
 A project to test functionality of the [pet store API](https://petstore3.swagger.io). Currently, tests endpoints for
 finding and adding pets as well as for creating users and logging in.
 
+The purpose of this repository is primarily to gain experience working with API testing tools in Java. As such a third-party API is being used to develop tests against. This third-party API does not necessarily adhere to best-practices in API development and responses returned by the API are not necessarily consistent with the specifications in its Swagger documentation. To keep the focus on developing tests, the tests in this repository verify the API's behaviour as-is, rather than as specified. 
+
 ## Getting Started
 
 ### Prerequisites
