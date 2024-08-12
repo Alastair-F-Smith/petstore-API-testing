@@ -12,6 +12,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import pojos.Category;
 import pojos.Pet;
+import utils.PetData;
 import utils.PetUtils;
 
 import java.util.Map;
@@ -31,6 +32,7 @@ public class AddPetStepdefs extends AbstractAPI {
     public void iIncludeTheFollowingValidCategoryData(DataTable dataTable) {
         Map<String, String> categoryData = dataTable.asMap();
         pet.setCategory(Category.fromDataTableRow(categoryData));
+        setRequestData(new PetData("", pet, pet.getStatus()));
     }
 
     @When("I make a POST request to the pet store API")

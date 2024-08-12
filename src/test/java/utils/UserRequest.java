@@ -42,6 +42,17 @@ public class UserRequest implements PetStoreApiRequest {
         };
     }
 
+    @Override
+    public void setRequestData(RequestData requestData) {
+        if (requestData instanceof UserData userData) {
+            username = userData.getId();
+            password = userData.getPassword();
+            body = (User) userData.getBody();
+        } else {
+            throw new IllegalArgumentException("Expected user data but got: " + requestData);
+        }
+    }
+
     private RequestSpecification singleUserEndpoints() {
         return switch(httpMethod) {
             case GET -> UserRequestSpecs.getUser(username);

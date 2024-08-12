@@ -13,7 +13,7 @@ Feature: retrieve a user's details from the API
       | lastName    | Example           |
       | phoneNumber | 04823748928       |
       | userStatus  | 1                 |
-    When I perform a POST request
+    When I send a "POST" request to the "/user" endpoint
 
   Scenario: Get a valid existing User
     Given I have the username "example4"

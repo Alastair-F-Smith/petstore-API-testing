@@ -2,10 +2,12 @@ package stepdefs;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import utils.RequestData;
 
 public abstract class AbstractAPI {
 	private static RequestSpecification requestSpecification;
 	private static Response response;
+	private static RequestData requestData;
 
 	public Response getResponse() {
 		return response;
@@ -21,5 +23,13 @@ public abstract class AbstractAPI {
 
 	public void setRequestSpecification(RequestSpecification requestSpecification) {
 		AbstractAPI.requestSpecification = requestSpecification;
+	}
+
+	public static RequestData getRequestData() {
+		return requestData;
+	}
+
+	public static void setRequestData(RequestData requestData) {
+		AbstractAPI.requestData = requestData;
 	}
 }

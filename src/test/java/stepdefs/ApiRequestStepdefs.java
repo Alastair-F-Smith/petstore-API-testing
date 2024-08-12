@@ -3,6 +3,9 @@ package stepdefs;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.MatcherAssert;
+import utils.PetStoreApiRequest;
+import utils.UserRequest;
+
 import static org.hamcrest.Matchers.is;
 
 public class ApiRequestStepdefs extends AbstractAPI {
@@ -19,5 +22,12 @@ public class ApiRequestStepdefs extends AbstractAPI {
 	@When("I perform a GET request")
 	public void iPerformGETRequest() {
 		setResponse(getRequestSpecification().get().thenReturn());
+	}
+
+	@When("I send a {string} request to the {string} endpoint")
+	public void iSendARequestToTheEndpoint(String httpMethod, String path) {
+		PetStoreApiRequest request = PetStoreApiRequest.from(path, httpMethod);
+		request.setRequestData(getRequestData());
+		setResponse(request.getResponse());
 	}
 }

@@ -1,10 +1,9 @@
 package stepdefs;
 
 import io.cucumber.java.en.*;
-import io.restassured.RestAssured;
 import org.hamcrest.MatcherAssert;
 import pojos.Pet;
-import utils.PetUtils;
+import utils.PetData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,12 +18,12 @@ public class FindByStatusStepdefs extends AbstractAPI {
     @Given("I have prepared a URL with {string}")
     public void iHavePreparedAURLWith(String status) {
         providedStatus = status;
-        setRequestSpecification(RestAssured.given(PetUtils.findByStatusRequestSpec(status)));
+        setRequestData(new PetData("", null, status));
     }
 
     @Given("I have prepared a URL without a status parameter")
     public void iHavePreparedAURLWithoutAStatusParameter() {
-        setRequestSpecification(RestAssured.given(PetUtils.findByStatusNoQueryParamRequestSpec()));
+        setRequestData(new PetData("", null, null));
     }
 
     @And("I retrieve the pet data from the response body")

@@ -12,7 +12,7 @@ Feature: login as an existing user
       | lastName    | Example           |
       | phoneNumber | 04823748928       |
       | userStatus  | 1                 |
-    When I perform a POST request
+    When I send a "POST" request to the "/user" endpoint
 
   Scenario: Login as a valid user
     Given I have login details with username "example6" and password "password"

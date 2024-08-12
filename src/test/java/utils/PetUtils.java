@@ -1,6 +1,7 @@
 package utils;
 
 import constants.Constants;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import pojos.Pet;
@@ -8,9 +9,16 @@ import pojos.Pet;
 public class PetUtils {
 
     public static RequestSpecification findByStatusRequestSpec(String status) {
-        return getRequestSpecBuilderWithPath(Constants.PET_FIND_BY_STATUS_PATH)
-                .addQueryParam("status", status)
-                .build();
+        RequestSpecification requestSpec;
+
+        if (status == null) {
+            requestSpec = findByStatusNoQueryParamRequestSpec();
+        } else {
+            requestSpec =  getRequestSpecBuilderWithPath(Constants.PET_FIND_BY_STATUS_PATH)
+                    .addQueryParam("status", status)
+                    .build();
+        }
+        return RestAssured.given(requestSpec);
     }
 
     public static RequestSpecification findByStatusNoQueryParamRequestSpec() {
@@ -25,15 +33,17 @@ public class PetUtils {
     }
 
     public static RequestSpecification addPetRequestSpec(Pet pet) {
-        return getRequestSpecBuilderWithPath(Constants.PET_PATH)
+        var requestSpec = getRequestSpecBuilderWithPath(Constants.PET_PATH)
                 .setBody(pet)
                 .addHeader("Content-Type", "application/json")
                 .build();
+        return RestAssured.given(requestSpec);
     }
 
     public static RequestSpecification deletePetRequestSpec(long id) {
-        return getRequestSpecBuilderWithPath(Constants.SINGLE_PET_PATH)
+        var requestSpec = getRequestSpecBuilderWithPath(Constants.SINGLE_PET_PATH)
                 .addPathParam("petId", id)
                 .build();
+        return RestAssured.given(requestSpec);
     }
 }
