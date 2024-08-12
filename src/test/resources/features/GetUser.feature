@@ -17,13 +17,13 @@ Feature: retrieve a user's details from the API
 
   Scenario: Get a valid existing User
     Given I have the username "example4"
-    When I perform a GET request
+    When I send a "GET" request to the "/user/{username}" endpoint
     Then A 200 status code is returned
     And the user details match those expected
 
   Scenario Outline: Get a username that is not present or invalid
     Given I have the username "<username>"
-    When I perform a GET request
+    When I send a "GET" request to the "/user/{username}" endpoint
     Then A 404 status code is returned
     And the response contains the message "User not found"
     Examples:

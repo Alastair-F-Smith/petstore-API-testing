@@ -5,6 +5,7 @@ import io.cucumber.java.en.*;
 import io.restassured.RestAssured;
 import org.hamcrest.MatcherAssert;
 import pojos.User;
+import utils.UserRequest;
 import utils.UserRequestSpecs;
 
 import java.util.Map;
@@ -15,6 +16,7 @@ public class UserStepdefs extends AbstractAPI {
 
     private User sentUser;
     private String username;
+    private String password;
 
     @Given("I have the following user details")
     public void iHavePreparedARequestWith(DataTable dataTable) {
@@ -25,6 +27,7 @@ public class UserStepdefs extends AbstractAPI {
 
     @Given("I have the username {string}")
     public void iHavePreparedARequestToGetUserDetailsWith(String username) {
+        this.username = username;
         if ("null".equals(username)) {
             setRequestSpecification(UserRequestSpecs.getUser(null));
         } else {
@@ -35,7 +38,41 @@ public class UserStepdefs extends AbstractAPI {
     @Given("I have login details with username {string} and password {string}")
     public void iHavePreparedARequestToLoginWithUsernameAndPassword(String username, String password) {
         this.username = username;
+        this.password = password;
         setRequestSpecification(UserRequestSpecs.login(username, password));
+    }
+
+    @Given("I am logged in")
+    public void iAmLoggedIn() {
+        UserRequestSpecs.login("user1", "XXXXXXXXXXX")
+                        .get();
+        setRequestSpecification(UserRequestSpecs.logout());
+        username = "user1";
+        password = "XXXXXXXXXXX";
+    }
+
+    @Given("I am not logged in")
+    public void iAmNotLoggedIn() {
+        setRequestSpecification(UserRequestSpecs.logout());
+    }
+
+    @When("I send a request to the logout endpoint")
+    public void iSendARequestToTheLogoutEndpoint() {
+        setResponse(getRequestSpecification()
+                            .get()
+                            .thenReturn());
+    }
+
+    @When("I send a {string} request to the {string} endpoint")
+    public void iSendARequestToTheEndpoint(String httpMethod, String path) {
+        UserRequest userRequest = UserRequest.builder()
+                                             .path(path)
+                                             .httpMethod(httpMethod)
+                                             .username(username)
+                                             .password(password)
+                                             .body(sentUser)
+                                             .build();
+        setResponse(userRequest.getResponse());
     }
 
     @And("the user details match those expected")
@@ -76,5 +113,4 @@ public class UserStepdefs extends AbstractAPI {
         String bodyText = getResponse().getBody().asString();
         MatcherAssert.assertThat(bodyText, containsString(expectedMessage));
     }
-
 }

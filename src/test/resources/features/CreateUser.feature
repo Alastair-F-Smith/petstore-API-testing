@@ -13,7 +13,7 @@ Feature: Create user on API
       | lastName    | Example             |
       | phoneNumber | 04823748928         |
       | userStatus  | 1                   |
-    When I perform a POST request
+    When I send a "POST" request to the "/user" endpoint
     Then A 200 status code is returned
 
   Scenario: Create user with existing id
@@ -26,7 +26,7 @@ Feature: Create user on API
       | lastName    | Example             |
       | phoneNumber | 04823748928         |
       | userStatus  | 1                   |
-    When I perform a POST request
+    When I send a "POST" request to the "/user" endpoint
     Then A 200 status code is returned
 
   Scenario Outline: Create user with existing username
@@ -39,7 +39,7 @@ Feature: Create user on API
       | lastName    | Example           |
       | phoneNumber | 04823748928       |
       | userStatus  | 1                 |
-    When I perform a POST request
+    When I send a "POST" request to the "/user" endpoint
     Then A 200 status code is returned
     Examples:
       | username |
