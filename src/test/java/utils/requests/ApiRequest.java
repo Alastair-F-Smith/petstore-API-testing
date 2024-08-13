@@ -1,7 +1,8 @@
-package utils;
+package utils.requests;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import utils.requestdata.RequestData;
 
 public abstract class ApiRequest implements PetStoreApiRequest {
 

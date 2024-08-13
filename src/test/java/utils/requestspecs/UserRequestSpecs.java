@@ -1,4 +1,4 @@
-package utils;
+package utils.requestspecs;
 
 import static constants.Constants.*;
 

@@ -1,9 +1,12 @@
-package utils;
+package utils.requests;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import pojos.User;
 import constants.Constants;
+import utils.requestdata.RequestData;
+import utils.requestdata.UserData;
+import utils.requestspecs.UserRequestSpecs;
 
 
 public class UserRequest implements PetStoreApiRequest {

@@ -4,8 +4,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.hamcrest.MatcherAssert;
 import pojos.User;
-import utils.RequestData;
-import utils.UserRequestSpecs;
+import utils.requestdata.RequestData;
+import utils.requestspecs.UserRequestSpecs;
 
 import java.util.Map;
 

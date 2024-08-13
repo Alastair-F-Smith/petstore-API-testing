@@ -3,7 +3,7 @@ package stepdefs;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.MatcherAssert;
-import utils.PetStoreApiRequest;
+import utils.requests.PetStoreApiRequest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;

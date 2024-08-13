@@ -1,4 +1,4 @@
-package utils;
+package utils.requestdata;
 
 public class RequestData {
 

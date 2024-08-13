@@ -1,4 +1,4 @@
-package utils;
+package utils.requests;
 
 public enum HttpMethods {
     GET, POST;

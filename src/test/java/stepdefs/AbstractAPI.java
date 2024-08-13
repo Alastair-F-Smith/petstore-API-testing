@@ -2,7 +2,7 @@ package stepdefs;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import utils.RequestData;
+import utils.requestdata.RequestData;
 
 public abstract class AbstractAPI {
 	private static RequestSpecification requestSpecification;

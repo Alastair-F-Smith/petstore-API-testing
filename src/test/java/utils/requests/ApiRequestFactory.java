@@ -1,9 +1,8 @@
-package utils;
+package utils.requests;
 
 import constants.Constants;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public class ApiRequestFactory {
 

@@ -10,8 +10,8 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import pojos.Category;
 import pojos.Pet;
-import utils.PetUtils;
-import utils.RequestData;
+import utils.requestspecs.PetRequestSpecs;
+import utils.requestdata.RequestData;
 
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public class AddPetStepdefs extends AbstractAPI {
     @AfterAll
     public static void afterAll() {
         if (pet != null) {
-            Response deletionResponse = RestAssured.given(PetUtils.deletePetRequestSpec(pet.getId()))
+            Response deletionResponse = RestAssured.given(PetRequestSpecs.deletePetRequestSpec(pet.getId()))
                                                    .delete()
                                                    .thenReturn();
 

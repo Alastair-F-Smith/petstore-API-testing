@@ -1,4 +1,4 @@
-package utils;
+package utils.requestspecs;
 
 import constants.Constants;
 import io.restassured.RestAssured;
@@ -6,7 +6,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import pojos.Pet;
 
-public class PetUtils {
+public class PetRequestSpecs {
 
     public static RequestSpecification findByStatusRequestSpec(String status) {
         RequestSpecification requestSpec;

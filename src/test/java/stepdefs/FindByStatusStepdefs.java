@@ -3,7 +3,7 @@ package stepdefs;
 import io.cucumber.java.en.*;
 import org.hamcrest.MatcherAssert;
 import pojos.Pet;
-import utils.RequestData;
+import utils.requestdata.RequestData;
 
 import java.util.Arrays;
 import java.util.List;
