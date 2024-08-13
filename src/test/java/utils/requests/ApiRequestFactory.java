@@ -54,6 +54,9 @@ public class ApiRequestFactory {
     }
 
     private PetStoreApiRequest getPetRequest() {
-        return new PetRequest(path, httpMethod, null);
+        return PetRequest.builder()
+                         .path(path)
+                         .httpMethod(httpMethod)
+                         .build();
     }
 }

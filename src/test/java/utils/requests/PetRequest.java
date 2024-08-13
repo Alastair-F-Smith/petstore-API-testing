@@ -27,4 +27,17 @@ public class PetRequest extends ApiRequest {
     public PetData getPetData() {
         return (PetData) getRequestData();
     }
+
+    public static PetRequestBuilder builder() {
+        return new PetRequestBuilder();
+    }
+
+    public static class PetRequestBuilder extends ApiRequestBuilder {
+
+        @Override
+        public PetRequest build() {
+            return new PetRequest(path, httpMethod, requestData);
+        }
+
+    }
 }
