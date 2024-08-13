@@ -5,7 +5,6 @@ Feature: Find pets by status
   Scenario Outline: Find pets by valid status
     Given I have prepared a URL with "<status>"
     When I send a "GET" request to the "/pet/findByStatus" endpoint
-    And I retrieve the pet data from the response body
     Then A 200 status code is returned
     And The response body contains more than one pet
     And The returned pets have the requested status
@@ -19,7 +18,7 @@ Feature: Find pets by status
       Given I have prepared a URL with "<status>"
       When I send a "GET" request to the "/pet/findByStatus" endpoint
       Then A 400 status code is returned
-      And The response body contains the error message "Input error:"
+      And The response contains the error message "Input error:"
       Examples:
         | status |
         | |
@@ -29,4 +28,4 @@ Feature: Find pets by status
       Given I have prepared a URL without a status parameter
       When I send a "GET" request to the "/pet/findByStatus" endpoint
       Then A 400 status code is returned
-      And The response body contains the message "No status provided. Try again?"
+      And the response contains the message "No status provided. Try again?"

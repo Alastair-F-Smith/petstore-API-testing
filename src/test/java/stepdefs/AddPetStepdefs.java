@@ -4,8 +4,6 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
@@ -33,19 +31,6 @@ public class AddPetStepdefs extends AbstractAPI {
         Map<String, String> categoryData = dataTable.asMap();
         pet.setCategory(Category.fromDataTableRow(categoryData));
         setRequestData(new PetData("", pet, pet.getStatus()));
-    }
-
-    @When("I make a POST request to the pet store API")
-    public void iMakeAPOSTRequestToThePetStoreAPI() {
-        setResponse(RestAssured.given(PetUtils.addPetRequestSpec(pet))
-                                .when()
-                                .post()
-                                .thenReturn());
-    }
-
-    @Then("I receive a response with a {int} status code")
-    public void iReceiveAResponseWithAStatusCode(int expected) {
-        MatcherAssert.assertThat(getResponse().statusCode(), is(expected));
     }
 
     @And("the response body contains pet data that matches the data I sent")

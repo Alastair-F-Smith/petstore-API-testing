@@ -13,5 +13,5 @@ Feature: Add a pet to the store
     | id | 7890 |
     | name | Cats |
     When I send a "POST" request to the "/pet" endpoint
-    Then I receive a response with a 200 status code
+    Then A 200 status code is returned
     And the response body contains pet data that matches the data I sent

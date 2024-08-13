@@ -26,29 +26,21 @@ public class FindByStatusStepdefs extends AbstractAPI {
         setRequestData(new PetData("", null, null));
     }
 
-    @And("I retrieve the pet data from the response body")
-    public void iRetrieveThePetDataFromTheResponseBody() {
-        pets = Arrays.asList(getResponse().getBody().as(Pet[].class));
-    }
-
     @And("The response body contains more than one pet")
     public void theResponseBodyContainsMoreThanOnePet() {
+        fetchPetsIfAbsent();
         MatcherAssert.assertThat(pets.size(), greaterThanOrEqualTo(1));
+    }
+
+    private void fetchPetsIfAbsent() {
+        if (pets == null) {
+            pets = Arrays.asList(getResponse().getBody().as(Pet[].class));
+        }
     }
 
     @And("The returned pets have the requested status")
     public void theReturnedPetsHaveTheRequestedStatus() {
+        fetchPetsIfAbsent();
         MatcherAssert.assertThat(pets.getFirst().getStatus(), is(providedStatus));
-    }
-
-    @And("The response body contains the error message {string}")
-    public void theResponseBodyContainsTheErrorMessage(String expectedErrorMessage) {
-        MatcherAssert.assertThat(getResponse().jsonPath().getString("message"), containsString(expectedErrorMessage));
-    }
-
-    @And("The response body contains the message {string}")
-    public void theResponseBodyContainsTheMessage(String expectedMessage) {
-        String body = getResponse().asString();
-        MatcherAssert.assertThat(body, is(expectedMessage));
     }
 }

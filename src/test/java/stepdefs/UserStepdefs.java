@@ -49,13 +49,6 @@ public class UserStepdefs extends AbstractAPI {
     public void iAmNotLoggedIn() {
     }
 
-    @When("I send a request to the logout endpoint")
-    public void iSendARequestToTheLogoutEndpoint() {
-        setResponse(getRequestSpecification()
-                            .get()
-                            .thenReturn());
-    }
-
     @And("the user details match those expected")
     public void userDetailsMatch() {
         User receivedUser = getResponse().getBody().as(User.class);
@@ -87,11 +80,5 @@ public class UserStepdefs extends AbstractAPI {
                         .get()
                         .then()
                         .statusCode(statusCode);
-    }
-
-    @And("the response contains the message {string}")
-    public void theResponseContainsTheMessage(String expectedMessage) {
-        String bodyText = getResponse().getBody().asString();
-        MatcherAssert.assertThat(bodyText, containsString(expectedMessage));
     }
 }
