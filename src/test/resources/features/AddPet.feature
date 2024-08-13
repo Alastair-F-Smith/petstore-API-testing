@@ -16,7 +16,6 @@ Feature: Add a pet to the store
     Then A 200 status code is returned
     And the response body contains pet data that matches the data I sent
 
-
   Scenario: Add a pet without an ID
 
     Given I have the following pet data:
@@ -25,3 +24,10 @@ Feature: Add a pet to the store
     When I send a "POST" request to the "/pet" endpoint
     Then A 500 status code is returned
     And The response contains the error message "There was an error processing your request."
+
+  Scenario: Attempt to add a pet but omit the request body
+
+    Given I do not have any pet data
+    When I send a "POST" request to the "/pet" endpoint
+    Then A 400 status code is returned
+    And The response contains the error message "Input error:"

@@ -22,7 +22,6 @@ public abstract class ApiRequest implements PetStoreApiRequest {
             return getRequestSpec().get();
         } else {
             return getRequestSpec()
-                    .log().all()
                     .post();
         }
     }

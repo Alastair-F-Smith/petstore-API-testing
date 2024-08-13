@@ -55,6 +55,12 @@ public class PetStepDefs extends AbstractAPI {
         setPetDataInBody();
     }
 
+    @Given("I do not have any pet data")
+    public void iDoNotHaveAnyPetData() {
+        pet = null;
+        setPetDataInBody();
+    }
+
     private void setPetDataInBody() {
         setRequestData(RequestData.petData()
                                   .body(pet)

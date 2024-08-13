@@ -33,11 +33,12 @@ public class PetRequestSpecs {
     }
 
     public static RequestSpecification addPetRequestSpec(Pet pet) {
-        var requestSpec = getRequestSpecBuilderWithPath(Constants.PET_PATH)
-                .setBody(pet)
-                .addHeader("Content-Type", "application/json")
-                .build();
-        return RestAssured.given(requestSpec);
+        var requestSpecBuilder = getRequestSpecBuilderWithPath(Constants.PET_PATH)
+                .addHeader("Content-Type", "application/json");
+        if (pet != null) {
+            requestSpecBuilder.setBody(pet);
+        }
+        return RestAssured.given(requestSpecBuilder.build());
     }
 
     public static RequestSpecification deletePetRequestSpec(long id) {
