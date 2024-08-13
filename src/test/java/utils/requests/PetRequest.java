@@ -21,7 +21,6 @@ public class PetRequest extends ApiRequest {
             case Constants.PET_FIND_BY_STATUS_PATH -> PetRequestSpecs.findByStatusRequestSpec(petData.getStatus());
             default -> throw new IllegalArgumentException("Endpoint not supported");
         };
-        System.out.println(requestSpecification);
         return requestSpecification;
     }
 

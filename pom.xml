@@ -54,6 +54,7 @@
               <configuration>
                   <includes>
                       <include>**/CucumberRunner*.java</include>
+                      <include>**/*Tests.java</include>
                   </includes>
               </configuration>
           </plugin>
