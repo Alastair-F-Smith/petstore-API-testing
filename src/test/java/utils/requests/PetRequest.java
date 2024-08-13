@@ -15,17 +15,23 @@ public class PetRequest extends ApiRequest {
 
     @Override
     public RequestSpecification getRequestSpec() {
-        PetData petData = getPetData();
-        RequestSpecification requestSpecification =  switch(getPath()) {
-            case Constants.PET_PATH -> PetRequestSpecs.addPetRequestSpec((Pet) petData.getBody());
-            case Constants.PET_FIND_BY_STATUS_PATH -> PetRequestSpecs.findByStatusRequestSpec(petData.getStatus());
+        return switch(getPath()) {
+            case Constants.PET_PATH -> PetRequestSpecs.addPetRequestSpec(getBody());
+            case Constants.PET_FIND_BY_STATUS_PATH -> PetRequestSpecs.findByStatusRequestSpec(getStatus());
             default -> throw new IllegalArgumentException("Endpoint not supported");
         };
-        return requestSpecification;
     }
 
     public PetData getPetData() {
         return (PetData) getRequestData();
+    }
+
+    public Pet getBody() {
+        return (Pet) super.getBody();
+    }
+
+    public String getStatus() {
+        return getPetData().getStatus();
     }
 
     public static PetRequestBuilder builder() {

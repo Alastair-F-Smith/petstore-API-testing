@@ -53,6 +53,10 @@ public abstract class ApiRequest implements PetStoreApiRequest {
         return requestData;
     }
 
+    public Object getBody() {
+        return requestData.getBody();
+    }
+
     public static abstract class ApiRequestBuilder {
 
         protected String path;
