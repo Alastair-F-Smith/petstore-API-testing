@@ -4,15 +4,14 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import pojos.Category;
 import pojos.Pet;
-import utils.PetUtils;
+import utils.requestspecs.PetRequestSpecs;
+import utils.requestdata.RequestData;
 
 import java.util.Map;
 
@@ -25,25 +24,20 @@ public class AddPetStepdefs extends AbstractAPI {
     public void iHaveTheFollowingValidPetData(DataTable dataTable) {
         Map<String, String> petData = dataTable.asMap();
         pet = Pet.fromDataTableRow(petData);
+        setPetDataInBody();
+    }
+
+    private void setPetDataInBody() {
+        setRequestData(RequestData.petData()
+                                  .body(pet)
+                                  .build());
     }
 
     @And("I include the following valid category data:")
     public void iIncludeTheFollowingValidCategoryData(DataTable dataTable) {
         Map<String, String> categoryData = dataTable.asMap();
         pet.setCategory(Category.fromDataTableRow(categoryData));
-    }
-
-    @When("I make a POST request to the pet store API")
-    public void iMakeAPOSTRequestToThePetStoreAPI() {
-        setResponse(RestAssured.given(PetUtils.addPetRequestSpec(pet))
-                                .when()
-                                .post()
-                                .thenReturn());
-    }
-
-    @Then("I receive a response with a {int} status code")
-    public void iReceiveAResponseWithAStatusCode(int expected) {
-        MatcherAssert.assertThat(getResponse().statusCode(), is(expected));
+        setPetDataInBody();
     }
 
     @And("the response body contains pet data that matches the data I sent")
@@ -54,7 +48,7 @@ public class AddPetStepdefs extends AbstractAPI {
     @AfterAll
     public static void afterAll() {
         if (pet != null) {
-            Response deletionResponse = RestAssured.given(PetUtils.deletePetRequestSpec(pet.getId()))
+            Response deletionResponse = RestAssured.given(PetRequestSpecs.deletePetRequestSpec(pet.getId()))
                                                    .delete()
                                                    .thenReturn();
 
