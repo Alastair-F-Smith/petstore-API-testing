@@ -108,7 +108,12 @@ public class PetStepDefs extends AbstractAPI {
     @Then("The returned pets have the requested status")
     public void theReturnedPetsHaveTheRequestedStatus() {
         fetchPetsIfAbsent();
-        MatcherAssert.assertThat(pets.getFirst().getStatus(), is(providedStatus));
+        MatcherAssert.assertThat(allHaveProvidedStatus(), is(true));
+    }
+
+    private boolean allHaveProvidedStatus() {
+        return pets.stream()
+                   .allMatch(pet -> providedStatus.equals(pet.getStatus()));
     }
 
     @AfterAll
