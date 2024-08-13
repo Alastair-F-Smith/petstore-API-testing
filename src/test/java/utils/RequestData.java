@@ -18,5 +18,11 @@ public class RequestData {
         return body;
     }
 
+    public static UserData.UserDataBuilder userData() {
+        return UserData.builder();
+    }
 
+    public static PetData.PetDataBuilder petData() {
+        return PetData.builder();
+    }
 }

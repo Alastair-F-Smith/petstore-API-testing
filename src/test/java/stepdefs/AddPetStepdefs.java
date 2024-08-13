@@ -10,8 +10,8 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import pojos.Category;
 import pojos.Pet;
-import utils.PetData;
 import utils.PetUtils;
+import utils.RequestData;
 
 import java.util.Map;
 
@@ -24,13 +24,20 @@ public class AddPetStepdefs extends AbstractAPI {
     public void iHaveTheFollowingValidPetData(DataTable dataTable) {
         Map<String, String> petData = dataTable.asMap();
         pet = Pet.fromDataTableRow(petData);
+        setPetDataInBody();
+    }
+
+    private void setPetDataInBody() {
+        setRequestData(RequestData.petData()
+                                  .body(pet)
+                                  .build());
     }
 
     @And("I include the following valid category data:")
     public void iIncludeTheFollowingValidCategoryData(DataTable dataTable) {
         Map<String, String> categoryData = dataTable.asMap();
         pet.setCategory(Category.fromDataTableRow(categoryData));
-        setRequestData(new PetData("", pet, pet.getStatus()));
+        setPetDataInBody();
     }
 
     @And("the response body contains pet data that matches the data I sent")

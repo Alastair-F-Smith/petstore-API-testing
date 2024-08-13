@@ -4,7 +4,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.hamcrest.MatcherAssert;
 import pojos.User;
-import utils.UserData;
+import utils.RequestData;
 import utils.UserRequestSpecs;
 
 import java.util.Map;
@@ -21,19 +21,26 @@ public class UserStepdefs extends AbstractAPI {
     public void iHavePreparedARequestWith(DataTable dataTable) {
         Map<String, String> userDetails = dataTable.asMap();
         sentUser = User.from(userDetails);
-        setRequestData(new UserData(sentUser.getUsername(), sentUser, sentUser.getPassword()));
+        setRequestData(RequestData.userData()
+                                  .body(sentUser)
+                                  .build());
     }
 
     @Given("I have the username {string}")
     public void iHavePreparedARequestToGetUserDetailsWith(String username) {
-        setRequestData(new UserData(username, sentUser, password));
+        setRequestData(RequestData.userData()
+                                  .username(username)
+                                  .build());
     }
 
     @Given("I have login details with username {string} and password {string}")
     public void iHavePreparedARequestToLoginWithUsernameAndPassword(String username, String password) {
         this.username = username;
         this.password = password;
-        setRequestData(new UserData(username, sentUser, password));
+        setRequestData(RequestData.userData()
+                                  .username(username)
+                                  .password(password)
+                                  .build());
     }
 
     @Given("I am logged in")
@@ -42,7 +49,10 @@ public class UserStepdefs extends AbstractAPI {
         password = "XXXXXXXXXXX";
         UserRequestSpecs.login(username, password)
                         .get();
-        setRequestData(new UserData(username, sentUser, password));
+        setRequestData(RequestData.userData()
+                                  .username(username)
+                                  .password(password)
+                                  .build());
     }
 
     @Given("I am not logged in")

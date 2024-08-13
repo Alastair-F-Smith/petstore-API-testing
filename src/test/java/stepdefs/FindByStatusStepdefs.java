@@ -3,7 +3,7 @@ package stepdefs;
 import io.cucumber.java.en.*;
 import org.hamcrest.MatcherAssert;
 import pojos.Pet;
-import utils.PetData;
+import utils.RequestData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,12 +18,15 @@ public class FindByStatusStepdefs extends AbstractAPI {
     @Given("I have prepared a URL with {string}")
     public void iHavePreparedAURLWith(String status) {
         providedStatus = status;
-        setRequestData(new PetData("", null, status));
+        setRequestData(RequestData.petData()
+                                  .status(status)
+                                  .build());
     }
 
     @Given("I have prepared a URL without a status parameter")
     public void iHavePreparedAURLWithoutAStatusParameter() {
-        setRequestData(new PetData("", null, null));
+        setRequestData(RequestData.petData()
+                                  .build());
     }
 
     @And("The response body contains more than one pet")
