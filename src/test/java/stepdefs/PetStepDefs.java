@@ -1,16 +1,22 @@
 package stepdefs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.AfterAll;
-import io.cucumber.java.en.And;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.RestAssured;
+import io.restassured.config.ObjectMapperConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import pojos.Category;
 import pojos.Pet;
+import utils.serialization.JacksonFilterFactory;
 import utils.requestdata.RequestData;
 import utils.requestspecs.PetRequestSpecs;
 
@@ -27,8 +33,23 @@ public class PetStepDefs extends AbstractAPI {
     private List<Pet> pets;
     private String providedStatus;
 
-    @Given("I have the following valid pet data:")
-    public void iHaveTheFollowingValidPetData(DataTable dataTable) {
+    @BeforeAll
+    public static void setUp() {
+        RestAssured.config = RestAssuredConfig.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
+                (type, s) -> {
+                    FilterProvider filter = new SimpleFilterProvider()
+                            .addFilter("idFilter", JacksonFilterFactory.getFilter("id",
+                                                                                  pojo -> ((Pet) pojo).getId(),
+                                                                                  id -> id >= 0));
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.setFilterProvider(filter);
+                    return objectMapper;
+                }
+        ));
+    }
+
+    @Given("I have the following pet data:")
+    public void iHaveTheFollowingPetData(DataTable dataTable) {
         Map<String, String> petData = dataTable.asMap();
         pet = Pet.fromDataTableRow(petData);
         setPetDataInBody();

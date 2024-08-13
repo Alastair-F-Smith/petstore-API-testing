@@ -21,7 +21,9 @@ public abstract class ApiRequest implements PetStoreApiRequest {
         if (httpMethod == HttpMethods.GET) {
             return getRequestSpec().get();
         } else {
-            return getRequestSpec().post();
+            return getRequestSpec()
+                    .log().all()
+                    .post();
         }
     }
 
