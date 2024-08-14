@@ -18,6 +18,7 @@ public class PetRequest extends ApiRequest {
         return switch(getPath()) {
             case Constants.PET_PATH -> PetRequestSpecs.addPetRequestSpec(getBody());
             case Constants.PET_FIND_BY_STATUS_PATH -> PetRequestSpecs.findByStatusRequestSpec(getStatus());
+            case Constants.SINGLE_PET_PATH -> PetRequestSpecs.singlePetRequestSpec(getRequestData().getId());
             default -> throw new IllegalArgumentException("Endpoint not supported");
         };
     }

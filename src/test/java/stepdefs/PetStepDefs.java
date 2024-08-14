@@ -119,11 +119,25 @@ public class PetStepDefs extends AbstractAPI {
     @AfterAll
     public static void afterAll() {
         if (pet != null) {
-            Response deletionResponse = RestAssured.given(PetRequestSpecs.deletePetRequestSpec(pet.getId()))
+            Response deletionResponse = RestAssured.given(PetRequestSpecs.singlePetRequestSpec(pet.getId()))
                                                    .delete()
                                                    .thenReturn();
 
             Assertions.assertEquals(deletionResponse.statusCode(), 200);
         }
+    }
+
+
+    @Given("I have the pet ID {string}")
+    public void iHaveThePetID(String petId) {
+        setRequestData(RequestData.petData()
+                               .petId(petId)
+                               .build());
+    }
+
+    @Then("The response contains pet data with the pet Id {string}")
+    public void theResponseContainsPetDataWithThePetId(String expectedId) {
+        long petId = getResponse().as(Pet.class).getId();
+        MatcherAssert.assertThat(petId, is(Long.parseLong(expectedId)));
     }
 }

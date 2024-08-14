@@ -41,7 +41,11 @@ public class PetRequestSpecs {
         return RestAssured.given(requestSpecBuilder.build());
     }
 
-    public static RequestSpecification deletePetRequestSpec(long id) {
+    public static RequestSpecification singlePetRequestSpec(long id) {
+        return singlePetRequestSpec(String.valueOf(id));
+    }
+
+    public static RequestSpecification singlePetRequestSpec(String id) {
         var requestSpec = getRequestSpecBuilderWithPath(Constants.SINGLE_PET_PATH)
                 .addPathParam("petId", id)
                 .build();
