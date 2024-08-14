@@ -18,12 +18,11 @@ public abstract class ApiRequest implements PetStoreApiRequest {
 
     @Override
     public Response getResponse() {
-        if (httpMethod == HttpMethods.GET) {
-            return getRequestSpec().get();
-        } else {
-            return getRequestSpec()
-                    .post();
-        }
+        return switch(httpMethod) {
+            case GET -> getRequestSpec().get();
+            case POST -> getRequestSpec().post();
+            case DELETE -> getRequestSpec().delete();
+        };
     }
 
     @Override

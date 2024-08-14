@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.RestAssured;
@@ -16,6 +17,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import pojos.Category;
 import pojos.Pet;
+import utils.journeys.PetJourneys;
 import utils.serialization.JacksonFilterFactory;
 import utils.requestdata.RequestData;
 import utils.requestspecs.PetRequestSpecs;
@@ -31,6 +33,7 @@ public class PetStepDefs extends AbstractAPI {
 
     private static Pet pet;
     private List<Pet> pets;
+    private String petId;
     private String providedStatus;
 
     @BeforeAll
@@ -88,6 +91,14 @@ public class PetStepDefs extends AbstractAPI {
                                   .build());
     }
 
+    @Given("I have the pet ID {string}")
+    public void iHaveThePetID(String petId) {
+        this.petId = petId;
+        setRequestData(RequestData.petData()
+                                  .petId(petId)
+                                  .build());
+    }
+
     @Then("the response body contains pet data that matches the data I sent")
     public void theResponseBodyContainsPetDataThatMatchesTheDataISent() {
         MatcherAssert.assertThat(getResponse().as(Pet.class), is(pet));
@@ -116,28 +127,29 @@ public class PetStepDefs extends AbstractAPI {
                    .allMatch(pet -> providedStatus.equals(pet.getStatus()));
     }
 
-    @AfterAll
-    public static void afterAll() {
-        if (pet != null) {
-            Response deletionResponse = RestAssured.given(PetRequestSpecs.singlePetRequestSpec(pet.getId()))
-                                                   .delete()
-                                                   .thenReturn();
-
-            Assertions.assertEquals(deletionResponse.statusCode(), 200);
-        }
-    }
-
-
-    @Given("I have the pet ID {string}")
-    public void iHaveThePetID(String petId) {
-        setRequestData(RequestData.petData()
-                               .petId(petId)
-                               .build());
-    }
-
     @Then("The response contains pet data with the pet Id {string}")
     public void theResponseContainsPetDataWithThePetId(String expectedId) {
         long petId = getResponse().as(Pet.class).getId();
         MatcherAssert.assertThat(petId, is(Long.parseLong(expectedId)));
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        if (pet != null) {
+            Response deletionResponse = PetJourneys.deletePet(pet.getId());
+            Assertions.assertEquals(deletionResponse.statusCode(), 200);
+        }
+    }
+
+    @Given("A pet with that ID is present in the store")
+    public void aPetWithThatIDIsPresentInTheStore() {
+        PetJourneys.addPet(petId);
+    }
+
+    @And("The pet has been removed from the store")
+    public void thePetHasBeenRemovedFromTheStore() {
+        int statusCode = PetJourneys.findById(petId)
+                                        .statusCode();
+        MatcherAssert.assertThat(statusCode, is(404));
     }
 }
