@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Pet{
+@JsonFilter("idFilter")
+public class Pet {
 
 	@JsonProperty("photoUrls")
 	private List<String> photoUrls;

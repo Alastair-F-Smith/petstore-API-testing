@@ -21,7 +21,8 @@ public abstract class ApiRequest implements PetStoreApiRequest {
         if (httpMethod == HttpMethods.GET) {
             return getRequestSpec().get();
         } else {
-            return getRequestSpec().post();
+            return getRequestSpec()
+                    .post();
         }
     }
 
@@ -51,5 +52,34 @@ public abstract class ApiRequest implements PetStoreApiRequest {
 
     public RequestData getRequestData() {
         return requestData;
+    }
+
+    public Object getBody() {
+        return requestData.getBody();
+    }
+
+    public static abstract class ApiRequestBuilder {
+
+        protected String path;
+        protected HttpMethods httpMethod;
+        protected RequestData requestData;
+
+        public ApiRequestBuilder path(String path) {
+            this.path = path;
+            return this;
+        }
+
+        public ApiRequestBuilder httpMethod(HttpMethods httpMethod) {
+            this.httpMethod = httpMethod;
+            return this;
+        }
+
+        public ApiRequestBuilder requestData(RequestData requestData) {
+            this.requestData = requestData;
+            return this;
+        }
+
+        public abstract ApiRequest build();
+
     }
 }
