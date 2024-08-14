@@ -32,6 +32,7 @@ import static org.hamcrest.Matchers.is;
 public class PetStepDefs extends AbstractAPI {
 
     private static Pet pet;
+    private static Pet existingPet;
     private List<Pet> pets;
     private String petId;
     private String providedStatus;
@@ -55,6 +56,8 @@ public class PetStepDefs extends AbstractAPI {
     public void iHaveTheFollowingPetData(DataTable dataTable) {
         Map<String, String> petData = dataTable.asMap();
         pet = Pet.fromDataTableRow(petData);
+        petId = String.valueOf(pet.getId());
+        existingPet = PetJourneys.getPetById(petId).orElse(null);
         setPetDataInBody();
     }
 
@@ -99,6 +102,17 @@ public class PetStepDefs extends AbstractAPI {
                                   .build());
     }
 
+    @Given("A pet with that ID is present in the store")
+    public void aPetWithThatIDIsPresentInTheStore() {
+        PetJourneys.addPet(petId);
+    }
+
+    @Given("A pet with that ID is not present in the store")
+    public void aPetWithThatIDIsNotPresentInTheStore() {
+        Response response = PetJourneys.findById(petId);
+        MatcherAssert.assertThat(response.statusCode(), is(404));
+    }
+
     @Then("the response body contains pet data that matches the data I sent")
     public void theResponseBodyContainsPetDataThatMatchesTheDataISent() {
         MatcherAssert.assertThat(getResponse().as(Pet.class), is(pet));
@@ -133,23 +147,21 @@ public class PetStepDefs extends AbstractAPI {
         MatcherAssert.assertThat(petId, is(Long.parseLong(expectedId)));
     }
 
-    @AfterAll
-    public static void afterAll() {
-        if (pet != null) {
-            Response deletionResponse = PetJourneys.deletePet(pet.getId());
-            Assertions.assertEquals(deletionResponse.statusCode(), 200);
-        }
-    }
-
-    @Given("A pet with that ID is present in the store")
-    public void aPetWithThatIDIsPresentInTheStore() {
-        PetJourneys.addPet(petId);
-    }
-
-    @And("The pet has been removed from the store")
+    @Then("The pet has been removed from the store")
     public void thePetHasBeenRemovedFromTheStore() {
         int statusCode = PetJourneys.findById(petId)
-                                        .statusCode();
+                                    .statusCode();
         MatcherAssert.assertThat(statusCode, is(404));
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        if (pet != null && existingPet == null) {
+            Response deletionResponse = PetJourneys.deletePet(pet.getId());
+            Assertions.assertEquals(deletionResponse.statusCode(), 200);
+        } else if (existingPet != null) {
+            // Restore pet data to original
+            PetJourneys.updatePet(pet);
+        }
     }
 }

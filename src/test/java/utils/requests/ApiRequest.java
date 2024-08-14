@@ -21,6 +21,7 @@ public abstract class ApiRequest implements PetStoreApiRequest {
         return switch(httpMethod) {
             case GET -> getRequestSpec().get();
             case POST -> getRequestSpec().post();
+            case PUT -> getRequestSpec().put();
             case DELETE -> getRequestSpec().delete();
         };
     }

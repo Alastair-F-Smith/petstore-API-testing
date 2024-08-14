@@ -7,6 +7,8 @@ import utils.requestdata.RequestData;
 import utils.requests.HttpMethods;
 import utils.requests.PetRequest;
 
+import java.util.Optional;
+
 public class PetJourneys {
 
     public static Response findById(String id) {
@@ -14,6 +16,15 @@ public class PetJourneys {
                            RequestData.petData()
                                       .petId(id)
                                       .build());
+    }
+
+    public static Optional<Pet> getPetById(String id) {
+        Response response = findById(id);
+        if (response.statusCode() == 200) {
+            return Optional.of(response.as(Pet.class));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private static Response getResponse(String path, HttpMethods httpMethod, RequestData requestData) {
@@ -47,5 +58,12 @@ public class PetJourneys {
 
     public static Response deletePet(long id) {
         return deletePet(String.valueOf(id));
+    }
+
+    public static Response updatePet(Pet pet) {
+        return getResponse(Constants.PET_PATH, HttpMethods.PUT,
+                           RequestData.petData()
+                                   .body(pet)
+                                   .build());
     }
 }
