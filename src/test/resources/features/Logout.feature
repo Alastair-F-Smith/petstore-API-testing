@@ -8,10 +8,10 @@ Feature: Logout
     Given I am logged in
     When I send a "GET" request to the "/user/logout" endpoint
     Then A 200 status code is returned
-    And the response contains the message "User logged out"
+    And The response contains the message "User logged out"
 
   Scenario: Logging out while not logged in
     Given I am not logged in
     When I send a "GET" request to the "/user/logout" endpoint
     Then A 200 status code is returned
-    And the response contains the message "User logged out"
+    And The response contains the message "User logged out"

@@ -25,7 +25,7 @@ Feature: retrieve a user's details from the API
     Given I have the username "<username>"
     When I send a "GET" request to the "/user/{username}" endpoint
     Then A 404 status code is returned
-    And the response contains the message "User not found"
+    And The response contains the message "User not found"
     Examples:
       | username |
       | null     |

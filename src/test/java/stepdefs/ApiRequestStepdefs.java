@@ -22,7 +22,7 @@ public class ApiRequestStepdefs extends AbstractAPI {
 		MatcherAssert.assertThat(getResponse().statusCode(),is(expectedStatusCode));
 	}
 
-	@Then("the response contains the message {string}")
+	@Then("The response contains the message {string}")
 	public void theResponseContainsTheMessage(String expectedMessage) {
 		String bodyText = getResponse().getBody().asString();
 		MatcherAssert.assertThat(bodyText, containsString(expectedMessage));

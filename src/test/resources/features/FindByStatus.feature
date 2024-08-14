@@ -28,4 +28,4 @@ Feature: Find pets by status
       Given I have prepared a URL without a status parameter
       When I send a "GET" request to the "/pet/findByStatus" endpoint
       Then A 400 status code is returned
-      And the response contains the message "No status provided. Try again?"
+      And The response contains the message "No status provided. Try again?"

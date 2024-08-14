@@ -19,7 +19,7 @@ Feature: Find a pet by its ID
     Given I have the pet ID "<petId>"
     When I send a "GET" request to the "/pet/{petId}" endpoint
     Then A 404 status code is returned
-    And the response contains the message "Pet not found"
+    And The response contains the message "Pet not found"
     Examples:
       | petId |
       | 111   |
