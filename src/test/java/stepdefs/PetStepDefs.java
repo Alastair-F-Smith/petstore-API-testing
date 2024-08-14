@@ -13,7 +13,7 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import pojos.Category;
 import pojos.Pet;
 import utils.serialization.JacksonFilterFactory;
@@ -123,7 +123,7 @@ public class PetStepDefs extends AbstractAPI {
                                                    .delete()
                                                    .thenReturn();
 
-            Assert.assertEquals(deletionResponse.statusCode(), 200);
+            Assertions.assertEquals(deletionResponse.statusCode(), 200);
         }
     }
 }
