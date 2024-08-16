@@ -17,6 +17,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import pojos.Category;
 import pojos.Pet;
+import pojos.UpdatePetForm;
 import utils.journeys.PetJourneys;
 import utils.serialization.JacksonFilterFactory;
 import utils.requestdata.RequestData;
@@ -25,9 +26,9 @@ import utils.requestspecs.PetRequestSpecs;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 public class PetStepDefs extends AbstractAPI {
 
@@ -36,6 +37,7 @@ public class PetStepDefs extends AbstractAPI {
     private List<Pet> pets;
     private String petId;
     private String providedStatus;
+    private UpdatePetForm formData;
 
     @BeforeAll
     public static void setUp() {
@@ -156,12 +158,31 @@ public class PetStepDefs extends AbstractAPI {
 
     @AfterAll
     public static void afterAll() {
-        if (pet != null && existingPet == null) {
-            Response deletionResponse = PetJourneys.deletePet(pet.getId());
-            Assertions.assertEquals(deletionResponse.statusCode(), 200);
-        } else if (existingPet != null) {
+         if (existingPet != null) {
             // Restore pet data to original
             PetJourneys.updatePet(pet);
         }
+    }
+
+    @Given("I have the following form data:")
+    public void iHaveTheFollowingFormData(DataTable dataTable) {
+        this.formData = UpdatePetForm.from(dataTable.asMap());
+        existingPet = PetJourneys.getPetById(formData.getPetId())
+                                 .orElse(null);
+        setRequestData(RequestData.petData()
+                                  .petId(formData.getPetId())
+                                  .body(formData)
+                                  .build());
+    }
+
+    @Then("The response contains the updated data")
+    public void theResponseContainsTheUpdatedData() {
+        pet = getResponse().as(Pet.class);
+        MatcherAssert.assertThat(formData.matches(pet), is(true));
+    }
+
+    @And("The status is removed")
+    public void theStatusIsRemoved() {
+        MatcherAssert.assertThat(pet.getStatus(), nullValue());
     }
 }

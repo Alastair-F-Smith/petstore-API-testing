@@ -5,6 +5,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import pojos.Pet;
+import pojos.UpdatePetForm;
 
 public class PetRequestSpecs {
 
@@ -49,6 +50,14 @@ public class PetRequestSpecs {
         var requestSpec = getRequestSpecBuilderWithPath(Constants.SINGLE_PET_PATH)
                 .addPathParam("petId", id)
                 .build();
+        return RestAssured.given(requestSpec);
+    }
+
+    public static RequestSpecification updatePetFormRequestSpec(String pathId, UpdatePetForm form) {
+        RequestSpecification requestSpec = new RequestSpecNonNullParams(
+                singlePetRequestSpec(pathId)).queryParam("name", form.getName())
+                                             .queryParam("status", form.getStatus())
+                                             .get();
         return RestAssured.given(requestSpec);
     }
 }
