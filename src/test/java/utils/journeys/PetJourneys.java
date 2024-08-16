@@ -4,8 +4,8 @@ import constants.Constants;
 import io.restassured.response.Response;
 import pojos.Pet;
 import utils.requestdata.RequestData;
+import utils.requests.RequestDispatcher;
 import utils.requests.HttpMethods;
-import utils.requests.PetRequestDispatcher;
 
 import java.util.Optional;
 
@@ -28,12 +28,12 @@ public class PetJourneys {
     }
 
     private static Response getResponse(String path, HttpMethods httpMethod, RequestData requestData) {
-        return PetRequestDispatcher.builder()
-                                   .path(path)
-                                   .httpMethod(httpMethod)
-                                   .requestData(requestData)
-                                   .build()
-                                   .getResponse();
+        return RequestDispatcher.builder()
+                                .path(path)
+                                .httpMethod(httpMethod)
+                                .requestData(requestData)
+                                .build()
+                                .getResponse();
     }
 
     public static Response addPet(Pet pet) {

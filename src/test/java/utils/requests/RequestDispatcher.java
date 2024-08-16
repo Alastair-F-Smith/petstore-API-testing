@@ -5,19 +5,19 @@ import io.restassured.specification.RequestSpecification;
 import utils.requestdata.RequestData;
 import utils.requestspecs.BaseRequestSpecs;
 
-public class AbstractRequestDispatcher implements ApiRequestDispatcher {
+public class RequestDispatcher implements ApiRequestDispatcher {
 
     private String path;
     private HttpMethods httpMethod;
     private RequestData requestData;
 
-    public AbstractRequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
+    public RequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
         this.path = path;
         this.httpMethod = httpMethod;
         this.requestData = requestData;
     }
 
-    public AbstractRequestDispatcher() {
+    public RequestDispatcher() {
     }
 
     @Override
@@ -89,8 +89,8 @@ public class AbstractRequestDispatcher implements ApiRequestDispatcher {
             return this;
         }
 
-        public AbstractRequestDispatcher build() {
-            return new AbstractRequestDispatcher(path, httpMethod, requestData);
+        public RequestDispatcher build() {
+            return new RequestDispatcher(path, httpMethod, requestData);
         }
 
     }

@@ -51,8 +51,6 @@ public class UserStepdefs extends AbstractAPI {
         UserRequestSpecs.login(username, password)
                         .get();
         setRequestData(RequestData.userData()
-//                                  .username(username)
-//                                  .password(password)
                                   .build());
     }
 

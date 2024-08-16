@@ -12,8 +12,11 @@ public interface ApiRequestDispatcher {
 
     void setRequestData(RequestData requestData);
 
-    static ApiRequestDispatcher from(String path, HttpMethods httpMethods) {
-        return RequestDispatcherFactory.getRequest(path, httpMethods);
+    static ApiRequestDispatcher from(String path, HttpMethods httpMethod) {
+        return RequestDispatcher.builder()
+                                .path(path)
+                                .httpMethod(httpMethod)
+                                .build();
     }
 
     static ApiRequestDispatcher from(String path, String httpMethod) {

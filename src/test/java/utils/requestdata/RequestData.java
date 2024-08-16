@@ -7,14 +7,12 @@ import java.util.Map;
 
 public abstract class RequestData {
 
-//    private final String id;
     private final Object body;
     private final Map<String, String> queryParams;
     private final Map<String, String> pathParams;
     private final Map<String, String> headers;
 
     public RequestData(Object body, Map<String, String> queryParams, Map<String, String> pathParams, Map<String, String> headers) {
-//        this.id = id;
         this.body = body;
         this.queryParams = queryParams;
         this.pathParams = pathParams;
