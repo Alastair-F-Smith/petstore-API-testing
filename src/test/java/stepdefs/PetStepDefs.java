@@ -14,19 +14,16 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Assertions;
 import pojos.Category;
 import pojos.Pet;
 import pojos.UpdatePetForm;
 import utils.journeys.PetJourneys;
 import utils.serialization.JacksonFilterFactory;
 import utils.requestdata.RequestData;
-import utils.requestspecs.PetRequestSpecs;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.hamcrest.Matchers.*;
 
@@ -72,6 +69,7 @@ public class PetStepDefs extends AbstractAPI {
     private void setPetDataInBody() {
         setRequestData(RequestData.petData()
                                   .body(pet)
+                               .contentType("application/json")
                                   .build());
     }
 
@@ -115,6 +113,17 @@ public class PetStepDefs extends AbstractAPI {
         MatcherAssert.assertThat(response.statusCode(), is(404));
     }
 
+    @Given("I have the following form data:")
+    public void iHaveTheFollowingFormData(DataTable dataTable) {
+        this.formData = UpdatePetForm.from(dataTable.asMap());
+        existingPet = PetJourneys.getPetById(formData.getPetId())
+                                 .orElse(null);
+        setRequestData(RequestData.petData()
+                                  .petId(formData.getPetId())
+                                  .queryParams(formData.getQueryParams())
+                                  .build());
+    }
+
     @Then("the response body contains pet data that matches the data I sent")
     public void theResponseBodyContainsPetDataThatMatchesTheDataISent() {
         MatcherAssert.assertThat(getResponse().as(Pet.class), is(pet));
@@ -156,33 +165,22 @@ public class PetStepDefs extends AbstractAPI {
         MatcherAssert.assertThat(statusCode, is(404));
     }
 
-    @AfterAll
-    public static void afterAll() {
-         if (existingPet != null) {
-            // Restore pet data to original
-            PetJourneys.updatePet(pet);
-        }
-    }
-
-    @Given("I have the following form data:")
-    public void iHaveTheFollowingFormData(DataTable dataTable) {
-        this.formData = UpdatePetForm.from(dataTable.asMap());
-        existingPet = PetJourneys.getPetById(formData.getPetId())
-                                 .orElse(null);
-        setRequestData(RequestData.petData()
-                                  .petId(formData.getPetId())
-                                  .body(formData)
-                                  .build());
-    }
-
     @Then("The response contains the updated data")
     public void theResponseContainsTheUpdatedData() {
         pet = getResponse().as(Pet.class);
         MatcherAssert.assertThat(formData.matches(pet), is(true));
     }
 
-    @And("The status is removed")
+    @Then("The status is removed")
     public void theStatusIsRemoved() {
         MatcherAssert.assertThat(pet.getStatus(), nullValue());
+    }
+
+    @AfterAll
+    public static void afterAll() {
+         if (existingPet != null) {
+            // Restore pet data to original
+            PetJourneys.updatePet(pet);
+        }
     }
 }

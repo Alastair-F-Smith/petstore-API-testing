@@ -23,6 +23,7 @@ public class UserStepdefs extends AbstractAPI {
         sentUser = User.from(userDetails);
         setRequestData(RequestData.userData()
                                   .body(sentUser)
+                               .contentType("application/json")
                                   .build());
     }
 
@@ -38,7 +39,7 @@ public class UserStepdefs extends AbstractAPI {
         this.username = username;
         this.password = password;
         setRequestData(RequestData.userData()
-                                  .username(username)
+                                  .usernameQueryParam(username)
                                   .password(password)
                                   .build());
     }
@@ -50,13 +51,15 @@ public class UserStepdefs extends AbstractAPI {
         UserRequestSpecs.login(username, password)
                         .get();
         setRequestData(RequestData.userData()
-                                  .username(username)
-                                  .password(password)
+//                                  .username(username)
+//                                  .password(password)
                                   .build());
     }
 
     @Given("I am not logged in")
     public void iAmNotLoggedIn() {
+        setRequestData(RequestData.userData()
+                                  .build());
     }
 
     @And("the user details match those expected")

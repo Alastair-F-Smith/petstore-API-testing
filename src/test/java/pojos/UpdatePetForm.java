@@ -1,5 +1,6 @@
 package pojos;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class UpdatePetForm {
@@ -30,6 +31,17 @@ public class UpdatePetForm {
         return petId.equals(String.valueOf(pet.getId()))
                 && name.equals(pet.getName())
                 && (status == null || status.equals(pet.getStatus()));
+    }
+
+    public Map<String, String> getQueryParams() {
+        Map<String, String> queryParams = new HashMap<>();
+        if (name != null) {
+            queryParams.put("name", name);
+        }
+        if (status != null) {
+            queryParams.put("status", status);
+        }
+        return queryParams;
     }
 
     public String getPetId() {

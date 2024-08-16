@@ -3,8 +3,9 @@ package utils.requests;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import utils.requestdata.RequestData;
+import utils.requestspecs.BaseRequestSpecs;
 
-public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher {
+public class AbstractRequestDispatcher implements ApiRequestDispatcher {
 
     private String path;
     private HttpMethods httpMethod;
@@ -14,6 +15,9 @@ public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher 
         this.path = path;
         this.httpMethod = httpMethod;
         this.requestData = requestData;
+    }
+
+    public AbstractRequestDispatcher() {
     }
 
     @Override
@@ -27,7 +31,9 @@ public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher 
     }
 
     @Override
-    public abstract RequestSpecification getRequestSpec();
+    public RequestSpecification getRequestSpec() {
+        return BaseRequestSpecs.getRequestSpec(getPath(), getRequestData());
+    }
 
     @Override
     public void setRequestData(RequestData requestData) {
@@ -58,7 +64,11 @@ public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher 
         return requestData.getBody();
     }
 
-    public static abstract class ApiRequestBuilder {
+    public static ApiRequestBuilder builder() {
+        return new ApiRequestBuilder();
+    }
+
+    public static class ApiRequestBuilder {
 
         protected String path;
         protected HttpMethods httpMethod;
@@ -79,7 +89,9 @@ public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher 
             return this;
         }
 
-        public abstract AbstractRequestDispatcher build();
+        public AbstractRequestDispatcher build() {
+            return new AbstractRequestDispatcher(path, httpMethod, requestData);
+        }
 
     }
 }
