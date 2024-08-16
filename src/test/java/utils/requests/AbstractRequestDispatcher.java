@@ -4,13 +4,13 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import utils.requestdata.RequestData;
 
-public abstract class ApiRequest implements PetStoreApiRequest {
+public abstract class AbstractRequestDispatcher implements ApiRequestDispatcher {
 
     private String path;
     private HttpMethods httpMethod;
     private RequestData requestData;
 
-    public ApiRequest(String path, HttpMethods httpMethod, RequestData requestData) {
+    public AbstractRequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
         this.path = path;
         this.httpMethod = httpMethod;
         this.requestData = requestData;
@@ -79,7 +79,7 @@ public abstract class ApiRequest implements PetStoreApiRequest {
             return this;
         }
 
-        public abstract ApiRequest build();
+        public abstract AbstractRequestDispatcher build();
 
     }
 }

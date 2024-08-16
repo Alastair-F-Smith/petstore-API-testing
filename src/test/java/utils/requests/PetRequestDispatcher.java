@@ -8,9 +8,9 @@ import utils.requestdata.PetData;
 import utils.requestdata.RequestData;
 import utils.requestspecs.PetRequestSpecs;
 
-public class PetRequest extends ApiRequest {
+public class PetRequestDispatcher extends AbstractRequestDispatcher {
 
-    public PetRequest(String path, HttpMethods httpMethod, RequestData requestData) {
+    public PetRequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
         super(path, httpMethod, requestData);
     }
 
@@ -55,8 +55,8 @@ public class PetRequest extends ApiRequest {
     public static class PetRequestBuilder extends ApiRequestBuilder {
 
         @Override
-        public PetRequest build() {
-            return new PetRequest(path, httpMethod, requestData);
+        public PetRequestDispatcher build() {
+            return new PetRequestDispatcher(path, httpMethod, requestData);
         }
 
     }

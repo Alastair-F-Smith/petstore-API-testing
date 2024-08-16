@@ -4,21 +4,21 @@ import constants.Constants;
 
 import java.util.Arrays;
 
-public class ApiRequestFactory {
+public class RequestDispatcherFactory {
 
     private String path;
     private HttpMethods httpMethod;
 
-    public ApiRequestFactory(String path, HttpMethods httpMethod) {
+    public RequestDispatcherFactory(String path, HttpMethods httpMethod) {
         this.path = path;
         this.httpMethod = httpMethod;
     }
 
-    public static PetStoreApiRequest getRequest(String path, HttpMethods httpMethod) {
-        return (new ApiRequestFactory(path, httpMethod)).getRequest();
+    public static ApiRequestDispatcher getRequest(String path, HttpMethods httpMethod) {
+        return (new RequestDispatcherFactory(path, httpMethod)).getRequest();
     }
 
-    public PetStoreApiRequest getRequest() {
+    public ApiRequestDispatcher getRequest() {
         BaseEndpoint baseEndpoint = BaseEndpoint.from(path);
         return switch (baseEndpoint) {
             case PET -> getPetRequest();
@@ -46,17 +46,17 @@ public class ApiRequestFactory {
         }
     }
 
-    private PetStoreApiRequest getUserRequest() {
-        return UserRequest.builder()
-                          .path(path)
-                          .httpMethod(httpMethod)
-                          .build();
+    private ApiRequestDispatcher getUserRequest() {
+        return UserRequestDispatcher.builder()
+                                    .path(path)
+                                    .httpMethod(httpMethod)
+                                    .build();
     }
 
-    private PetStoreApiRequest getPetRequest() {
-        return PetRequest.builder()
-                         .path(path)
-                         .httpMethod(httpMethod)
-                         .build();
+    private ApiRequestDispatcher getPetRequest() {
+        return PetRequestDispatcher.builder()
+                                   .path(path)
+                                   .httpMethod(httpMethod)
+                                   .build();
     }
 }

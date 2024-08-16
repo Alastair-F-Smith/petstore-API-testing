@@ -9,9 +9,9 @@ import utils.requestdata.UserData;
 import utils.requestspecs.UserRequestSpecs;
 
 
-public class UserRequest extends ApiRequest {
+public class UserRequestDispatcher extends AbstractRequestDispatcher {
 
-    private UserRequest(String path, HttpMethods httpMethod, RequestData requestData) {
+    private UserRequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
         super(path, httpMethod, requestData);
     }
 
@@ -62,8 +62,8 @@ public class UserRequest extends ApiRequest {
     public static class UserRequestBuilder extends ApiRequestBuilder {
 
         @Override
-        public UserRequest build() {
-            return new UserRequest(path, httpMethod, requestData);
+        public UserRequestDispatcher build() {
+            return new UserRequestDispatcher(path, httpMethod, requestData);
         }
     }
 
