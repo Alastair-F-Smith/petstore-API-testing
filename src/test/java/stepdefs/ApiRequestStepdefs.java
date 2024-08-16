@@ -3,7 +3,7 @@ package stepdefs;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.MatcherAssert;
-import utils.requests.PetStoreApiRequest;
+import utils.requests.ApiRequestDispatcher;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -12,7 +12,7 @@ public class ApiRequestStepdefs extends AbstractAPI {
 
 	@When("I send a {string} request to the {string} endpoint")
 	public void iSendARequestToTheEndpoint(String httpMethod, String path) {
-		PetStoreApiRequest request = PetStoreApiRequest.from(path, httpMethod);
+		ApiRequestDispatcher request = ApiRequestDispatcher.from(path, httpMethod);
 		request.setRequestData(getRequestData());
 		setResponse(request.getResponse());
 	}
@@ -22,7 +22,7 @@ public class ApiRequestStepdefs extends AbstractAPI {
 		MatcherAssert.assertThat(getResponse().statusCode(),is(expectedStatusCode));
 	}
 
-	@Then("the response contains the message {string}")
+	@Then("The response contains the message {string}")
 	public void theResponseContainsTheMessage(String expectedMessage) {
 		String bodyText = getResponse().getBody().asString();
 		MatcherAssert.assertThat(bodyText, containsString(expectedMessage));

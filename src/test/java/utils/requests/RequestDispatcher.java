@@ -3,31 +3,37 @@ package utils.requests;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import utils.requestdata.RequestData;
+import utils.requestspecs.BaseRequestSpecs;
 
-public abstract class ApiRequest implements PetStoreApiRequest {
+public class RequestDispatcher implements ApiRequestDispatcher {
 
     private String path;
     private HttpMethods httpMethod;
     private RequestData requestData;
 
-    public ApiRequest(String path, HttpMethods httpMethod, RequestData requestData) {
+    public RequestDispatcher(String path, HttpMethods httpMethod, RequestData requestData) {
         this.path = path;
         this.httpMethod = httpMethod;
         this.requestData = requestData;
     }
 
-    @Override
-    public Response getResponse() {
-        if (httpMethod == HttpMethods.GET) {
-            return getRequestSpec().get();
-        } else {
-            return getRequestSpec()
-                    .post();
-        }
+    public RequestDispatcher() {
     }
 
     @Override
-    public abstract RequestSpecification getRequestSpec();
+    public Response getResponse() {
+        return switch(httpMethod) {
+            case GET -> getRequestSpec().get();
+            case POST -> getRequestSpec().post();
+            case PUT -> getRequestSpec().put();
+            case DELETE -> getRequestSpec().delete();
+        };
+    }
+
+    @Override
+    public RequestSpecification getRequestSpec() {
+        return BaseRequestSpecs.getRequestSpec(getPath(), getRequestData());
+    }
 
     @Override
     public void setRequestData(RequestData requestData) {
@@ -58,7 +64,11 @@ public abstract class ApiRequest implements PetStoreApiRequest {
         return requestData.getBody();
     }
 
-    public static abstract class ApiRequestBuilder {
+    public static ApiRequestBuilder builder() {
+        return new ApiRequestBuilder();
+    }
+
+    public static class ApiRequestBuilder {
 
         protected String path;
         protected HttpMethods httpMethod;
@@ -79,7 +89,9 @@ public abstract class ApiRequest implements PetStoreApiRequest {
             return this;
         }
 
-        public abstract ApiRequest build();
+        public RequestDispatcher build() {
+            return new RequestDispatcher(path, httpMethod, requestData);
+        }
 
     }
 }

@@ -51,6 +51,7 @@
         </dependency>
     </dependencies>
 
+    <!--  The surefire plugin version needs to be specified in order for the tests to run when using Github actions  -->
     <build>
         <plugins>
             <plugin>
