@@ -25,9 +25,13 @@ HTML-formatted reports in the `target` directory.
 
 ## Tested Endpoints
 - Pet
-  - POST /pet/{petId}
+  - POST /pet
   - GET /pet/findByStatus
+  - GET /pet/{petId}
+  - PUT /pet
+  - POST /pet/{petId}
 - User
   - POST /user
   - GET /user/login
+  - GET /user/logout
   - GET /user/{username}
